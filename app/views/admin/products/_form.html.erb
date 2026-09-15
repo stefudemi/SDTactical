@@ -1,0 +1,32 @@
+<%= form_with model: [:admin, @product] do |form| %>
+
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div>
+    <%= form.label :price %>
+    <%= form.number_field :price, step: 0.01 %>
+  </div>
+
+  <div>
+    <%= form.label :stock %>
+    <%= form.number_field :stock %>
+  </div>
+
+  <div>
+    <%= form.label :category_id %>
+    <%= form.number_field :category_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+
+<% end %>
