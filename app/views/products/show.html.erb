@@ -1,0 +1,84 @@
+<section class="product-detail">
+  <div class="container">
+    <div class="breadcrumbs">
+      <%= link_to "Inicio", root_path %>
+      <span>/</span>
+      <%= link_to "Productos", products_path %>
+      <span>/</span>
+      <span><%= @product.name %></span>
+    </div>
+
+    <div class="product-layout">
+      <div class="product-gallery" aria-label="Imagen principal del producto"></div>
+
+      <div class="product-summary">
+        <div class="meta-line">
+          <span class="product-category"><%= @product.category&.name || "Sin categoría" %></span>
+          <% if @product.stock.to_i > 0 %>
+            <span class="stock-tag">En stock</span>
+          <% else %>
+            <span class="stock-tag stock-tag--low">Sin stock</span>
+          <% end %>
+        </div>
+
+        <h1><%= @product.name %></h1>
+
+        <div class="price">$<%= number_to_currency(@product.price, precision: 2, unit: "", separator: ",", delimiter: ".") %></div>
+
+        <div class="product-info-box">
+          <%= simple_format(@product.description.presence || "Descripción del producto en preparación.") %>
+        </div>
+
+        <div class="product-summary__actions">
+          <div class="quantity-selector" aria-label="Selector de cantidad">
+            <button type="button" aria-label="Disminuir cantidad">−</button>
+            <span>1</span>
+            <button type="button" aria-label="Aumentar cantidad">+</button>
+          </div>
+          <%= link_to "Agregar al carrito", "#", class: "btn btn-primary" %>
+        </div>
+
+        <div class="product-info-box">
+          <strong>Información adicional</strong>
+          <p>Fabricación premium, ideal para uso en campo y entrenamiento. Consulta disponibilidad y asesoramiento técnico.</p>
+        </div>
+      </div>
+    </div>
+
+    <% if @related_products.any? %>
+      <div class="section">
+        <div class="section-heading">
+          <p class="eyebrow">También podés ver</p>
+          <h2>Productos relacionados</h2>
+        </div>
+
+        <div class="product-grid">
+          <% @related_products.each do |related| %>
+            <article class="product-card">
+              <div class="product-card__image" aria-label="Imagen del producto relacionado <%= related.name %>"></div>
+              <div class="product-card__body">
+                <div class="product-meta">
+                  <span class="product-category"><%= related.category&.name || "Sin categoría" %></span>
+                  <% if related.stock.to_i > 0 %>
+                    <span class="stock-tag">En stock</span>
+                  <% else %>
+                    <span class="stock-tag stock-tag--low">Sin stock</span>
+                  <% end %>
+                </div>
+                <h3><%= related.name %></h3>
+                <div class="product-card__price">
+                  <strong>$<%= number_to_currency(related.price, precision: 2, unit: "", separator: ",", delimiter: ".") %></strong>
+                  <span><%= related.stock %> uds.</span>
+                </div>
+                <div class="product-card__actions">
+                  <%= link_to "Ver", product_path(related), class: "btn btn-secondary" %>
+                  <%= link_to "Agregar", "#", class: "btn btn-primary" %>
+                </div>
+              </div>
+            </article>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>

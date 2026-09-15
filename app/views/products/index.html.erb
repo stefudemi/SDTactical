@@ -1,0 +1,84 @@
+<section class="catalog-shell">
+  <div class="container">
+    <div class="catalog-header">
+      <div class="breadcrumbs">
+        <%= link_to "Inicio", root_path %>
+        <span>/</span>
+        <span>Productos</span>
+      </div>
+      <h1>Catálogo SDTactical</h1>
+    </div>
+
+    <div class="catalog-layout">
+      <aside class="catalog-filters" aria-label="Filtros de productos">
+        <div class="filter-group">
+          <legend>Categoría</legend>
+          <%= select_tag :category, options_from_collection_for_select(@categories, "id", "name"), include_blank: "Todas", class: "filter-select" %>
+        </div>
+
+        <div class="filter-group">
+          <label>Precio</label>
+          <div class="range-row">
+            <%= number_field_tag :min_price, nil, placeholder: "Mín.", min: 0 %>
+            <%= number_field_tag :max_price, nil, placeholder: "Máx.", min: 0 %>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <legend>Disponibilidad</legend>
+          <label class="filter-check">
+            <%= check_box_tag :available_only, true, false %>
+            <span>Solo disponibles</span>
+          </label>
+          <label class="filter-check">
+            <%= check_box_tag :in_stock, true, false %>
+            <span>En stock</span>
+          </label>
+        </div>
+
+        <div class="filter-group">
+          <label>Ordenar por</label>
+          <%= select_tag :sort, options_for_select([['Más relevantes', 'relevance'], ['Precio: menor a mayor', 'price_asc'], ['Precio: mayor a menor', 'price_desc'], ['Más nuevos', 'newest']], 'relevance'), class: "filter-select" %>
+        </div>
+      </aside>
+
+      <div class="catalog-results">
+        <div class="catalog-toolbar">
+          <p>Mostrando <strong><%= @products.count %></strong> productos</p>
+          <%= select_tag :sort_mobile, options_for_select([['Más relevantes', 'relevance'], ['Precio: menor a mayor', 'price_asc'], ['Precio: mayor a menor', 'price_desc'], ['Más nuevos', 'newest']], 'relevance'), class: "sort-select" %>
+        </div>
+
+        <div class="product-grid">
+          <% @products.each do |product| %>
+            <article class="product-card">
+              <div class="product-card__image" aria-label="Imagen del producto <%= product.name %>"></div>
+
+              <div class="product-card__body">
+                <div class="product-meta">
+                  <span class="product-category"><%= product.category&.name || "Sin categoría" %></span>
+                  <% if product.stock.to_i > 0 %>
+                    <span class="stock-tag">En stock</span>
+                  <% else %>
+                    <span class="stock-tag stock-tag--low">Sin stock</span>
+                  <% end %>
+                </div>
+
+                <h3><%= product.name %></h3>
+
+                <div class="product-card__price">
+                  <strong>$<%= number_to_currency(product.price, precision: 2, unit: "", separator: ",", delimiter: ".") %></strong>
+                  <span><%= product.stock %> uds.</span>
+                </div>
+
+                <div class="product-card__actions">
+                  <%= link_to "Ver producto", product_path(product), class: "btn btn-secondary" %>
+                  <%= link_to "Agregar", "#", class: "btn btn-primary" %>
+                </div>
+              </div>
+            </article>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

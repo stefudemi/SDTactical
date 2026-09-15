@@ -1,29 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
   <head>
-    <title><%= content_for(:title) || "Sd Tactical" %></title>
+    <title><%= content_for(:title) || "SDTactical | Airsoft Premium" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="SDTactical — tienda especializada en equipamiento tactical y airsoft.">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Sd Tactical">
+    <meta name="application-name" content="SDTactical">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="site-shell">
+      <header class="topbar">
+        <div class="container topbar__inner">
+          <%= link_to root_path, class: "brand" do %>
+            <span class="brand__mark">SD</span>
+            <span class="brand__text">SDTactical</span>
+          <% end %>
+
+          <nav class="main-nav" aria-label="Navegación principal">
+            <%= link_to "Inicio", root_path %>
+            <%= link_to "Productos", "#" %>
+            <%= link_to "Categorías", "#" %>
+            <%= link_to "Ofertas", "#" %>
+          </nav>
+
+          <div class="header-tools">
+            <div class="search-box" aria-label="Buscar productos">
+              <span class="search-box__icon">⌕</span>
+              <input type="search" placeholder="Buscar productos" aria-label="Buscar productos">
+            </div>
+
+            <%= link_to "Ingresá", "#", class: "nav-link nav-link--muted" %>
+            <%= link_to "Carrito (0)", "#", class: "nav-link nav-link--cart" %>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <%= yield %>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-grid">
+          <div>
+            <%= link_to root_path, class: "brand brand--footer" do %>
+              <span class="brand__mark">SD</span>
+              <span class="brand__text">SDTactical</span>
+            <% end %>
+            <p class="footer-copy">
+              Equipamiento táctico y airsoft pensado para rendimiento, seguridad y estilo.
+            </p>
+          </div>
+
+          <div>
+            <h3>Navegación</h3>
+            <ul>
+              <li><%= link_to "Inicio", root_path %></li>
+              <li><%= link_to "Productos", "#" %></li>
+              <li><%= link_to "Categorías", "#" %></li>
+              <li><%= link_to "Contacto", "#" %></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Categorías</h3>
+            <ul>
+              <li><%= link_to "Rifles", "#" %></li>
+              <li><%= link_to "Pistolas", "#" %></li>
+              <li><%= link_to "Accesorios", "#" %></li>
+              <li><%= link_to "Equipo", "#" %></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Contacto</h3>
+            <ul>
+              <li>ventas@sdtactical.com.ar</li>
+              <li>+54 11 5555-1010</li>
+              <li>Buenos Aires, Argentina</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="container footer-bottom">
+          <span>© 2026 SDTactical</span>
+          <span>Todos los derechos reservados.</span>
+        </div>
+      </footer>
+    </div>
   </body>
 </html>
