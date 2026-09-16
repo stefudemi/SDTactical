@@ -1,0 +1,12 @@
+<%= form_with model: [:admin, category], class: "admin-form" do |form| %>
+  <% if category.errors.any? %>
+    <div class="admin-errors">
+      <strong><%= pluralize(category.errors.count, "error") %> impidieron guardar la categoría:</strong>
+      <ul><% category.errors.full_messages.each do |message| %><li><%= message %></li><% end %></ul>
+    </div>
+  <% end %>
+
+  <div class="admin-field"><%= form.label :name, "Nombre" %><%= form.text_field :name, autofocus: true %></div>
+  <div class="admin-field"><%= form.label :description, "Descripción" %><%= form.text_area :description %></div>
+  <div class="admin-form-actions"><%= form.submit class: "btn btn-primary" %><%= link_to "Cancelar", admin_categories_path, class: "btn btn-secondary" %></div>
+<% end %>

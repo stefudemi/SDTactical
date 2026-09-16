@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   resources :products, only: [:index, :show]
 
   namespace :admin do
+    root "dashboard#index"
     resources :products
+    resources :categories
+    resources :orders, only: [:index, :show, :edit, :update]
+    resources :users, only: [:index, :show, :edit, :update]
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

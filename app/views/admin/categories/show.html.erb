@@ -1,0 +1,8 @@
+<section class="admin-shell"><div class="container">
+  <div class="admin-header"><div><p class="eyebrow">Categoría</p><h1><%= @category.name %></h1></div><div class="admin-actions"><%= link_to "Editar", edit_admin_category_path(@category), class: "btn btn-primary" %><%= link_to "Volver", admin_categories_path, class: "btn btn-secondary" %></div></div>
+  <article class="admin-card"><h2>Descripción</h2><p><%= @category.description.presence || "Sin descripción." %></p></article>
+  <article class="admin-card"><h2>Productos asociados</h2>
+    <% if @products.any? %><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Producto</th><th>Precio</th><th>Stock</th></tr></thead><tbody><% @products.each do |product| %><tr><td><%= link_to product.name, admin_product_path(product) %></td><td><%= number_to_currency(product.price, unit: "$", separator: ",", delimiter: ".") %></td><td><%= product.stock %></td></tr><% end %></tbody></table></div><% else %><p class="empty-state">Esta categoría todavía no tiene productos.</p><% end %>
+  </article>
+  <%= button_to "Eliminar categoría", admin_category_path(@category), method: :delete, class: "btn btn-secondary", data: { turbo_confirm: "¿Eliminar esta categoría?" } %>
+</div></section>

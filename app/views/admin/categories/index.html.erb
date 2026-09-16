@@ -1,0 +1,6 @@
+<section class="admin-shell"><div class="container">
+  <div class="admin-header"><div><p class="eyebrow">Catálogo</p><h1>Categorías</h1></div><%= link_to "Nueva categoría", new_admin_category_path, class: "btn btn-primary" %></div>
+  <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Nombre</th><th>Descripción</th><th>Productos</th><th></th></tr></thead><tbody>
+    <% @categories.each do |category| %><tr><td><%= link_to category.name, admin_category_path(category) %></td><td><%= category.description.presence || "—" %></td><td><%= category.products.size %></td><td><%= link_to "Editar", edit_admin_category_path(category) %></td></tr><% end %>
+  </tbody></table></div>
+</div></section>

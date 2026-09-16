@@ -1,0 +1,9 @@
+<%= form_with model: [:admin, user], class: "admin-form" do |form| %>
+  <% if user.errors.any? %>
+    <div class="admin-errors"><strong><%= pluralize(user.errors.count, "error") %> impidieron guardar el usuario:</strong><ul><% user.errors.full_messages.each do |message| %><li><%= message %></li><% end %></ul></div>
+  <% end %>
+  <div class="admin-field"><%= form.label :name, "Nombre" %><%= form.text_field :name %></div>
+  <div class="admin-field"><%= form.label :email, "Email" %><%= form.email_field :email %></div>
+  <div class="admin-field admin-field--checkbox"><%= form.check_box :admin %><%= form.label :admin, "Administrador" %></div>
+  <div class="admin-form-actions"><%= form.submit "Actualizar usuario", class: "btn btn-primary" %><%= link_to "Cancelar", admin_user_path(user), class: "btn btn-secondary" %></div>
+<% end %>

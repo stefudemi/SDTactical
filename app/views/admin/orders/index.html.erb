@@ -1,0 +1,6 @@
+<section class="admin-shell"><div class="container">
+  <div class="admin-header"><div><p class="eyebrow">Ventas</p><h1>Pedidos</h1></div></div>
+  <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>ID</th><th>Usuario</th><th>Estado</th><th>Total</th><th></th></tr></thead><tbody>
+    <% @orders.each do |order| %><tr><td>#<%= order.id %></td><td><%= link_to(order.user.name.presence || order.user.email, admin_user_path(order.user)) %></td><td><%= order.status.presence || "—" %></td><td><%= number_to_currency(order.total, unit: "$", separator: ",", delimiter: ".") %></td><td><%= link_to "Ver", admin_order_path(order) %></td></tr><% end %>
+  </tbody></table></div>
+</div></section>

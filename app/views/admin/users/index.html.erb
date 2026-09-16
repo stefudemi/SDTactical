@@ -1,0 +1,6 @@
+<section class="admin-shell"><div class="container">
+  <div class="admin-header"><div><p class="eyebrow">Cuentas</p><h1>Usuarios</h1></div></div>
+  <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Nombre</th><th>Email</th><th>Administrador</th><th></th></tr></thead><tbody>
+    <% @users.each do |user| %><tr><td><%= user.name.presence || "—" %></td><td><%= user.email %></td><td><%= user.admin? ? "Sí" : "No" %></td><td><%= link_to "Ver", admin_user_path(user) %></td></tr><% end %>
+  </tbody></table></div>
+</div></section>
