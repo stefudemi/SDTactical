@@ -9,7 +9,7 @@ class Order < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
   validates :total, numericality: { greater_than_or_equal_to: 0 }
 
-  def recalculate_total!
+  def recalculate_total
     self.total = order_items.sum { |item| item.unit_price * item.quantity }
   end
 

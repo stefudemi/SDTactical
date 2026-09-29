@@ -23,6 +23,16 @@ Rails.application.routes.draw do
 >>>>>>> e646093 (Complete admin categories and orders CRUD)
   end
 
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :products, only: [:index, :show]
+      post "login", to: "sessions#create"
+      delete "logout", to: "sessions#destroy"
+      get "profile", to: "profile#show"
+      resources :orders, only: [:index, :show, :create]
+    end
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
