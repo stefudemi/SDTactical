@@ -1,4 +1,4 @@
-class Admin::CategoriesController < ApplicationController
+class Admin::CategoriesController < Admin::BaseController
   before_action :set_category, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -15,6 +15,7 @@ class Admin::CategoriesController < ApplicationController
 
   def create
     @category = Category.new(category_params)
+
     if @category.save
       redirect_to admin_category_path(@category), notice: "Categoría creada correctamente."
     else
@@ -22,7 +23,8 @@ class Admin::CategoriesController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+  end
 
   def update
     if @category.update(category_params)

@@ -1,5 +1,5 @@
-class Admin::OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update]
+class Admin::OrdersController < Admin::BaseController
+  before_action :set_order, only: [:show, :update]
 
   def index
     @orders = Order.includes(:user).order(created_at: :desc)
@@ -9,16 +9,12 @@ class Admin::OrdersController < ApplicationController
     @order_items = @order.order_items.includes(:product)
   end
 
-  def edit
-    @statuses = available_statuses
-  end
-
   def update
     if @order.update(order_params)
-      redirect_to admin_order_path(@order), notice: "Estado del pedido actualizado correctamente."
+      redirect_to admin_order_path(@order), notice: "Estado del pedido actualizado."
     else
-      @statuses = available_statuses
-      render :edit, status: :unprocessable_entity
+      @order_items = @order.order_items.includes(:product)
+      render :show, status: :unprocessable_entity
     end
   end
 
@@ -30,9 +26,5 @@ class Admin::OrdersController < ApplicationController
 
   def order_params
     params.require(:order).permit(:status)
-  end
-
-  def available_statuses
-    (["pending", "processing", "shipped", "completed", "cancelled"] + [@order.status]).compact.uniq
   end
 end

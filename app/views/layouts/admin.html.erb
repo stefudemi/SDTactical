@@ -11,6 +11,8 @@
     <header>
       <nav aria-label="Administración">
         <%= link_to "Productos", admin_products_path %>
+        <%= link_to "Categorías", admin_categories_path %>
+        <%= link_to "Pedidos", admin_orders_path %>
       </nav>
       <%= button_to "Cerrar sesión", logout_path, method: :delete %>
     </header>

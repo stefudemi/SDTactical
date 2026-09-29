@@ -17,12 +17,17 @@
 
   <div>
     <%= form.label :stock %>
-    <%= form.number_field :stock %>
+    <%= form.number_field :stock, step: 1 %>
   </div>
 
   <div>
     <%= form.label :category_id %>
-    <%= form.number_field :category_id %>
+    <%= form.collection_select :category_id, Category.order(:name), :id, :name, prompt: "Seleccioná una categoría" %>
+  </div>
+
+  <div>
+    <%= form.label :image %>
+    <%= form.file_field :image, accept: "image/*" %>
   </div>
 
   <div>

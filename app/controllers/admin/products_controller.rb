@@ -1,6 +1,6 @@
 class Admin::ProductsController < Admin::BaseController
   def index
-    @products = Product.all
+    @products = Product.includes(:category).order(:name)
   end
 
   def show
@@ -50,7 +50,8 @@ class Admin::ProductsController < Admin::BaseController
       :description,
       :price,
       :stock,
-      :category_id
+      :category_id,
+      :image
     )
   end
 end

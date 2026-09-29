@@ -15,8 +15,12 @@ Rails.application.routes.draw do
 >>>>>>> 27c6c25 (Add admin authentication and authorization)
     resources :products
     resources :categories
+<<<<<<< HEAD
     resources :orders, only: [:index, :show, :edit, :update]
     resources :users, only: [:index, :show, :edit, :update]
+=======
+    resources :orders, only: [:index, :show, :update]
+>>>>>>> e646093 (Complete admin categories and orders CRUD)
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

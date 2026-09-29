@@ -1,7 +1,7 @@
 require "test_helper"
 
 class CategoryTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "requires a name" do
+    assert_not Category.new(description: "Sin nombre").valid?
+  end
 end
