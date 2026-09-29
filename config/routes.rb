@@ -3,8 +3,16 @@ Rails.application.routes.draw do
 
   resources :products, only: [:index, :show]
 
+  get "login", to: "sessions#new", as: :login
+  post "login", to: "sessions#create"
+  delete "logout", to: "sessions#destroy", as: :logout
+
   namespace :admin do
+<<<<<<< HEAD
     root "dashboard#index"
+=======
+    root "products#index"
+>>>>>>> 27c6c25 (Add admin authentication and authorization)
     resources :products
     resources :categories
     resources :orders, only: [:index, :show, :edit, :update]

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Administración | SDTactical</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+  </head>
+  <body>
+    <header>
+      <nav aria-label="Administración">
+        <%= link_to "Productos", admin_products_path %>
+      </nav>
+      <%= button_to "Cerrar sesión", logout_path, method: :delete %>
+    </header>
+    <% flash.each do |type, message| %>
+      <p role="status"><%= message %></p>
+    <% end %>
+    <main><%= yield %></main>
+  </body>
+</html>
