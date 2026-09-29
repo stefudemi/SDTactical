@@ -22,4 +22,12 @@ class ProductTest < ActiveSupport::TestCase
     assert_not product.valid?
     assert_includes product.errors.attribute_names, :stock
   end
+
+  test "requires price and stock values" do
+    product = Product.new(name: "Sin datos numéricos", category: categories(:one))
+
+    assert_not product.valid?
+    assert_includes product.errors.attribute_names, :price
+    assert_includes product.errors.attribute_names, :stock
+  end
 end

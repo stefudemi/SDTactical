@@ -49,6 +49,19 @@ class Api::V1::ApiTest < ActionDispatch::IntegrationTest
     assert_equal initial_stock - 1, product.reload.stock
   end
 
+  test "enqueues an order confirmation after successful creation" do
+    product = products(:one)
+    token = login
+
+    assert_enqueued_with(job: OrderConfirmationJob) do
+      post api_v1_orders_path,
+        params: { order: { items: [{ product_id: product.id, quantity: 1 }] } },
+        headers: bearer_headers(token)
+    end
+
+    assert_response :created
+  end
+
   test "failed order creation persists no partial order or stock changes" do
     product = products(:one)
     initial_stock = product.stock

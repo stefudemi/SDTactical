@@ -14,4 +14,12 @@ class OrderItemTest < ActiveSupport::TestCase
     assert_not item.valid?
     assert_includes item.errors.attribute_names, :quantity
   end
+
+  test "requires quantity and unit price" do
+    item = OrderItem.new(order: orders(:one), product: products(:one))
+
+    assert_not item.valid?
+    assert_includes item.errors.attribute_names, :quantity
+    assert_includes item.errors.attribute_names, :unit_price
+  end
 end

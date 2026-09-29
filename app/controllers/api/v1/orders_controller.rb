@@ -12,6 +12,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
   def create
     order = Orders::Create.new(user: current_user, items: order_params).call
+    OrderConfirmationJob.perform_later(order.id)
     render json: order_json(order), status: :created
   rescue Orders::Create::InvalidItems, Orders::Create::UnavailableProduct, Orders::Create::InsufficientStock => error
     render json: { error: error.message }, status: :unprocessable_entity
