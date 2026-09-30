@@ -1,5 +1,5 @@
 class Admin::OrdersController < Admin::BaseController
-  before_action :set_order, only: [:show, :update]
+  before_action :set_order, only: [ :show, :update ]
 
   def index
     @orders = Order.includes(:user).order(created_at: :desc)

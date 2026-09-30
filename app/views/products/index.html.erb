@@ -51,7 +51,9 @@
         <div class="product-grid">
           <% @products.each do |product| %>
             <article class="product-card">
-              <div class="product-card__image" aria-label="Imagen del producto <%= product.name %>"></div>
+              <div class="product-card__image<%= ' product-card__image--with-image' if product.image.attached? %>" aria-label="Imagen del producto <%= product.name %>">
+                <%= image_tag product.image, alt: product.name if product.image.attached? %>
+              </div>
 
               <div class="product-card__body">
                 <div class="product-meta">

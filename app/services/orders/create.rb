@@ -40,7 +40,7 @@ module Orders
         quantity = parse_integer(item["quantity"])
         raise InvalidItems, "quantity debe ser positivo" unless quantity.positive?
 
-        [product_id, quantity]
+        [ product_id, quantity ]
       rescue ArgumentError, TypeError
         raise InvalidItems, "product_id y quantity deben ser enteros válidos"
       end

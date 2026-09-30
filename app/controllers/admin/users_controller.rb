@@ -1,5 +1,5 @@
-class Admin::UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update]
+class Admin::UsersController < Admin::BaseController
+  before_action :set_user, only: [ :show, :edit, :update ]
 
   def index
     @users = User.order(:name, :email)
@@ -12,7 +12,10 @@ class Admin::UsersController < ApplicationController
   def edit; end
 
   def update
-    if @user.update(user_params)
+    @user.assign_attributes(user_params)
+    @user.admin = params.require(:user).fetch(:admin, "0") == "1"
+
+    if @user.save
       redirect_to admin_user_path(@user), notice: "Usuario actualizado correctamente."
     else
       render :edit, status: :unprocessable_entity
@@ -26,6 +29,6 @@ class Admin::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :admin)
+    params.require(:user).permit(:name, :email)
   end
 end

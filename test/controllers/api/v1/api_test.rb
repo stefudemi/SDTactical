@@ -37,7 +37,7 @@ class Api::V1::ApiTest < ActionDispatch::IntegrationTest
 
     assert_difference("Order.count") do
       post api_v1_orders_path,
-        params: { order: { items: [{ product_id: product.id, quantity: 1, unit_price: 0, total: 0 }] } },
+        params: { order: { items: [ { product_id: product.id, quantity: 1, unit_price: 0, total: 0 } ] } },
         headers: bearer_headers(token)
       assert_response :created, response.body
     end
@@ -55,7 +55,7 @@ class Api::V1::ApiTest < ActionDispatch::IntegrationTest
 
     assert_enqueued_with(job: OrderConfirmationJob) do
       post api_v1_orders_path,
-        params: { order: { items: [{ product_id: product.id, quantity: 1 }] } },
+        params: { order: { items: [ { product_id: product.id, quantity: 1 } ] } },
         headers: bearer_headers(token)
     end
 

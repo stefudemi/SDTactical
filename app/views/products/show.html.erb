@@ -9,7 +9,9 @@
     </div>
 
     <div class="product-layout">
-      <div class="product-gallery" aria-label="Imagen principal del producto"></div>
+      <div class="product-gallery<%= ' product-gallery--with-image' if @product.image.attached? %>" aria-label="Imagen principal del producto">
+        <%= image_tag @product.image, alt: @product.name if @product.image.attached? %>
+      </div>
 
       <div class="product-summary">
         <div class="meta-line">
@@ -55,7 +57,9 @@
         <div class="product-grid">
           <% @related_products.each do |related| %>
             <article class="product-card">
-              <div class="product-card__image" aria-label="Imagen del producto relacionado <%= related.name %>"></div>
+              <div class="product-card__image<%= ' product-card__image--with-image' if related.image.attached? %>" aria-label="Imagen del producto relacionado <%= related.name %>">
+                <%= image_tag related.image, alt: related.name if related.image.attached? %>
+              </div>
               <div class="product-card__body">
                 <div class="product-meta">
                   <span class="product-category"><%= related.category&.name || "Sin categoría" %></span>

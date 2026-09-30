@@ -1,35 +1,27 @@
 Rails.application.routes.draw do
   root "home#index"
 
-  resources :products, only: [:index, :show]
+  resources :products, only: [ :index, :show ]
 
   get "login", to: "sessions#new", as: :login
   post "login", to: "sessions#create"
   delete "logout", to: "sessions#destroy", as: :logout
 
   namespace :admin do
-<<<<<<< HEAD
     root "dashboard#index"
-=======
-    root "products#index"
->>>>>>> 27c6c25 (Add admin authentication and authorization)
     resources :products
     resources :categories
-<<<<<<< HEAD
-    resources :orders, only: [:index, :show, :edit, :update]
-    resources :users, only: [:index, :show, :edit, :update]
-=======
-    resources :orders, only: [:index, :show, :update]
->>>>>>> e646093 (Complete admin categories and orders CRUD)
+    resources :orders, only: [ :index, :show, :edit, :update ]
+    resources :users, only: [ :index, :show, :edit, :update ]
   end
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      resources :products, only: [:index, :show]
+      resources :products, only: [ :index, :show ]
       post "login", to: "sessions#create"
       delete "logout", to: "sessions#destroy"
       get "profile", to: "profile#show"
-      resources :orders, only: [:index, :show, :create]
+      resources :orders, only: [ :index, :show, :create ]
     end
   end
 
