@@ -1,0 +1,51 @@
+<section class="admin-shell">
+  <div class="container">
+    <div class="admin-header">
+      <div>
+        <p class="eyebrow">SDTactical</p>
+        <h1>Crear cuenta</h1>
+        <p>Registrate para realizar y consultar tus pedidos.</p>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <%= form_with model: @user, url: signup_path, class: "admin-form" do |form| %>
+        <% if @user.errors.any? %>
+          <div class="admin-errors">
+            <strong>No se pudo crear la cuenta:</strong>
+            <ul>
+              <% @user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="admin-field">
+          <%= form.label :name, "Nombre" %>
+          <%= form.text_field :name, required: true, autocomplete: "name" %>
+        </div>
+
+        <div class="admin-field">
+          <%= form.label :email, "Email" %>
+          <%= form.email_field :email, required: true, autocomplete: "email" %>
+        </div>
+
+        <div class="admin-field">
+          <%= form.label :password, "Contraseña" %>
+          <%= form.password_field :password, required: true, autocomplete: "new-password" %>
+        </div>
+
+        <div class="admin-field">
+          <%= form.label :password_confirmation, "Confirmar contraseña" %>
+          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password" %>
+        </div>
+
+        <div class="admin-form-actions">
+          <%= form.submit "Crear cuenta", class: "btn btn-primary" %>
+          <%= link_to "Ya tengo cuenta", login_path, class: "btn btn-secondary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

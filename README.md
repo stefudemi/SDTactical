@@ -32,6 +32,8 @@ En desarrollo, las credenciales creadas por `db:seed` son:
 
 El back-office está bajo `/admin` y requiere iniciar sesión con un usuario administrador. Esta cuenta y contraseña son únicamente para desarrollo local; cambiá la contraseña y configurá un mecanismo seguro antes de publicar la aplicación.
 
+Los usuarios finales pueden crear su propia cuenta desde <http://localhost:3000/signup> o desde el enlace de registro en la pantalla de login. El registro público siempre crea cuentas con permisos de usuario final (`admin: false`) e inicia sesión al completarse. La API no crea cuentas: su endpoint de login autentica usuarios ya registrados.
+
 ## API JSON v1
 
 Los endpoints están bajo `/api/v1`. Productos se pueden consultar sin token. Perfil, pedidos y cierre de sesión requieren el encabezado `Authorization: Bearer <token>`.

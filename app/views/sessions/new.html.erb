@@ -1,5 +1,9 @@
 <h1>Iniciar sesión</h1>
 
+<% if flash[:alert].present? %>
+  <p class="admin-errors"><%= flash[:alert] %></p>
+<% end %>
+
 <%= form_with url: login_path do |form| %>
   <div>
     <%= form.label :email %>
@@ -11,3 +15,5 @@
   </div>
   <%= form.submit "Ingresar" %>
 <% end %>
+
+<p>¿Todavía no tenés cuenta? <%= link_to "Crear una cuenta", signup_path %></p>
