@@ -1,4 +1,14 @@
 <%= form_with model: [:admin, @product] do |form| %>
+  <% if @product.errors.any? %>
+    <div class="admin-errors">
+      <strong><%= pluralize(@product.errors.count, "error") %> impidieron guardar el producto:</strong>
+      <ul>
+        <% @product.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
   <div>
     <%= form.label :name %>

@@ -25,4 +25,15 @@ class Admin::ProductsControllerTest < ActionDispatch::IntegrationTest
     get edit_admin_product_path(products(:one))
     assert_response :success
   end
+
+  test "does not delete a product referenced by an order" do
+    product = products(:one)
+
+    assert_no_difference("Product.count") do
+      delete admin_product_path(product)
+    end
+
+    assert_redirected_to admin_product_path(product)
+    assert_predicate flash[:alert], :present?
+  end
 end

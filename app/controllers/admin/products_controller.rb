@@ -37,9 +37,12 @@ class Admin::ProductsController < Admin::BaseController
 
   def destroy
     @product = Product.find(params[:id])
-    @product.destroy
 
-    redirect_to admin_products_path
+    if @product.destroy
+      redirect_to admin_products_path, notice: "Producto eliminado correctamente."
+    else
+      redirect_to admin_product_path(@product), alert: @product.errors.full_messages.to_sentence
+    end
   end
 
   private

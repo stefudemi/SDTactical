@@ -4,7 +4,7 @@ Aplicación Rails para administrar un catálogo de productos de airsoft y permit
 
 ## Requisitos
 
-- Ruby 4.0.6 (ver `.ruby-version`)
+- Ruby 3.4.7 (ver `.ruby-version`). Ruby 4 todavía no es compatible con todas las dependencias de Rails, RuboCop y Brakeman utilizadas por este proyecto.
 - Bundler
 - SQLite 3
 
@@ -17,6 +17,12 @@ bundle install
 bin/rails db:prepare
 bin/rails db:seed
 bin/rails server
+```
+
+En PowerShell, si Windows bloquea la ejecución directa de los archivos dentro de `bin/`, anteponé Ruby:
+
+```powershell
+ruby bin\rails server
 ```
 
 Abrí <http://localhost:3000>. `db:prepare` crea la base y aplica las migraciones pendientes. `db:seed` carga categorías y productos de ejemplo y crea el administrador de desarrollo si todavía no existe.
@@ -91,5 +97,7 @@ bin/rubocop
 bin/brakeman --no-pager
 bin/rails test
 ```
+
+En PowerShell usá `ruby bin\rubocop`, `ruby bin\brakeman --no-pager` y `ruby bin\rails test` si los scripts de `bin/` no tienen permisos de ejecución.
 
 El repositorio incluye tests de modelos, controladores, API y trabajos. Revisá los resultados de RuboCop y Brakeman antes de entregar.
