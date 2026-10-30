@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :products, only: [ :index, :show ]
       post "login", to: "sessions#create"
+      post "register", to: "registrations#create"
       delete "logout", to: "sessions#destroy"
       get "profile", to: "profile#show"
       resources :orders, only: [ :index, :show, :create ]

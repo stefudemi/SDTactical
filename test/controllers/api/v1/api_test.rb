@@ -18,6 +18,32 @@ class Api::V1::ApiTest < ActionDispatch::IntegrationTest
     assert_not response.body.include?(token)
   end
 
+  test "register creates a final user and returns a bearer token" do
+    assert_difference("User.count") do
+      post api_v1_register_path, params: {
+        user: { name: "New Customer", email: "new@example.test", password: "password", password_confirmation: "password" }
+      }
+    end
+
+    assert_response :created
+    assert_equal "Bearer", response.parsed_body.fetch("token_type")
+    assert_equal "new@example.test", response.parsed_body.dig("user", "email")
+    assert_not User.find_by!(email: "new@example.test").admin?
+  end
+
+  test "register returns validation errors" do
+    post api_v1_register_path, params: { user: { name: "", email: "wrong", password: "short" } }
+
+    assert_response :unprocessable_entity
+    assert response.parsed_body.fetch("errors").present?
+  end
+
+  test "api accepts the configured frontend origin" do
+    get api_v1_products_path, headers: { "Origin" => "http://localhost:5173" }
+
+    assert_equal "http://localhost:5173", response.headers["Access-Control-Allow-Origin"]
+  end
+
   test "profile requires a valid token and logout invalidates it" do
     get api_v1_profile_path
     assert_response :unauthorized
