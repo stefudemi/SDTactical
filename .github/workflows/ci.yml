@@ -13,8 +13,8 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-      - run: bin/brakeman --no-pager
-      - run: bin/bundler-audit
+      - run: ruby bin/brakeman --no-pager
+      - run: ruby bin/bundler-audit
 
   scan_js:
     runs-on: ubuntu-latest
@@ -24,7 +24,7 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-      - run: bin/importmap audit
+      - run: ruby bin/importmap audit
 
   lint:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
           key: rubocop-${{ runner.os }}-${{ env.DEPENDENCIES_HASH }}-${{ github.ref_name == github.event.repository.default_branch && github.run_id || 'default' }}
           restore-keys: |
             rubocop-${{ runner.os }}-${{ env.DEPENDENCIES_HASH }}-
-      - run: bin/rubocop -f github
+      - run: ruby bin/rubocop -f github
 
   test:
     runs-on: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-      - run: bin/rails db:test:prepare test
+      - run: ruby bin/rails db:test:prepare test
         env:
           RAILS_ENV: test
 
@@ -68,7 +68,7 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-      - run: bin/rails db:test:prepare test:system
+      - run: ruby bin/rails db:test:prepare test:system
         env:
           RAILS_ENV: test
       - uses: actions/upload-artifact@v4
