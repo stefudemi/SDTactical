@@ -58,4 +58,3 @@ jobs:
       - run: ruby bin/rails db:test:prepare test
         env:
           RAILS_ENV: test
-
