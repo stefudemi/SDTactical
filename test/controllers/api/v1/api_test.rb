@@ -32,10 +32,13 @@ class Api::V1::ApiTest < ActionDispatch::IntegrationTest
   end
 
   test "register returns validation errors" do
-    post api_v1_register_path, params: { user: { name: "", email: "wrong", password: "short" } }
+    post api_v1_register_path, params: {
+      user: { name: "Another Customer", email: @user.email, password: "password", password_confirmation: "password" }
+    }
 
     assert_response :unprocessable_entity
     assert response.parsed_body.fetch("errors").present?
+    assert response.parsed_body.fetch("errors").key?("email")
   end
 
   test "api accepts the configured frontend origin" do
