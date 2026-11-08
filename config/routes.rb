@@ -20,11 +20,15 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :products, only: [ :index, :show ]
+      resources :categories, only: :index
       post "login", to: "sessions#create"
       post "register", to: "registrations#create"
       delete "logout", to: "sessions#destroy"
       get "profile", to: "profile#show"
-      resources :orders, only: [ :index, :show, :create ]
+      patch "profile", to: "profile#update"
+      resources :orders, only: [ :index, :show, :create ] do
+        post :cancel, on: :member
+      end
     end
   end
 

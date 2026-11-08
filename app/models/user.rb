@@ -6,7 +6,10 @@ class User < ApplicationRecord
 
     before_validation :normalize_email
 
-    validates :email, presence: true, uniqueness: { case_sensitive: false }
+    validates :name, presence: true
+    validates :email, presence: true, uniqueness: { case_sensitive: false },
+      format: { with: URI::MailTo::EMAIL_REGEXP, allow_blank: true }
+    validates :password, length: { minimum: 6 }, allow_nil: true
 
     private
 

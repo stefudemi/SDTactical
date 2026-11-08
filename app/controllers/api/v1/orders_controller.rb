@@ -1,5 +1,5 @@
 class Api::V1::OrdersController < Api::V1::BaseController
-  before_action :set_order, only: :show
+  before_action :set_order, only: [ :show, :cancel ]
 
   def index
     orders = current_user.orders.includes(order_items: :product).order(created_at: :desc)
@@ -18,6 +18,13 @@ class Api::V1::OrdersController < Api::V1::BaseController
     render json: { error: error.message }, status: :unprocessable_entity
   rescue ActiveRecord::RecordInvalid => error
     render json: { errors: error.record.errors.to_hash }, status: :unprocessable_entity
+  end
+
+  def cancel
+    Orders::Cancel.new(order: @order).call
+    render json: order_json(@order.reload)
+  rescue Orders::Cancel::NotCancellable => error
+    render json: { error: error.message }, status: :unprocessable_entity
   end
 
   private

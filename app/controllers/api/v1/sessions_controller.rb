@@ -7,7 +7,7 @@ class Api::V1::SessionsController < ActionController::API
     end
 
     user.regenerate_api_token
-    render json: { token: user.api_token, token_type: "Bearer" }, status: :ok
+    render json: { token: user.api_token, token_type: "Bearer", user: { id: user.id, name: user.name, email: user.email, admin: user.admin? } }, status: :ok
   end
 
   def destroy

@@ -141,6 +141,128 @@ class Api::V1::ApiTest < ActionDispatch::IntegrationTest
     assert_not response.body.include?("api_token")
   end
 
+  test "categories endpoint lists categories publicly" do
+    get api_v1_categories_path
+
+    assert_response :ok
+    assert_equal Category.count, response.parsed_body.size
+    assert_equal %w[description id name], response.parsed_body.first.keys.sort
+  end
+
+  test "products can be filtered by category and search term" do
+    category = Category.create!(name: "Filtrada")
+    match = Product.create!(name: "Mira Holográfica", description: "Óptica", price: 10, stock: 3, category: category)
+
+    get api_v1_products_path, params: { category_id: category.id }
+    assert_equal [ match.id ], response.parsed_body.map { |product| product["id"] }
+
+    get api_v1_products_path, params: { q: "holográf" }
+    assert_equal [ match.id ], response.parsed_body.map { |product| product["id"] }
+
+    get api_v1_products_path, params: { q: "no-existe-xyz" }
+    assert_response :ok
+    assert_empty response.parsed_body
+  end
+
+  test "product show returns 404 for unknown id" do
+    get api_v1_product_path(0)
+
+    assert_response :not_found
+    assert_equal "Producto no encontrado", response.parsed_body["error"]
+  end
+
+  test "login includes the user and rejects wrong credentials" do
+    post api_v1_login_path, params: { email: @user.email, password: "password" }
+    assert_equal @user.email, response.parsed_body.dig("user", "email")
+
+    post api_v1_login_path, params: { email: @user.email, password: "incorrecta" }
+    assert_response :unauthorized
+    assert_equal "Email o contraseña inválidos", response.parsed_body["error"]
+  end
+
+  test "register validates password length and email format" do
+    post api_v1_register_path, params: { user: { name: "X", email: "no-es-email", password: "123", password_confirmation: "123" } }
+
+    assert_response :unprocessable_entity
+    errors = response.parsed_body.fetch("errors")
+    assert errors.key?("email")
+    assert errors.key?("password")
+  end
+
+  test "profile can be updated and validates input" do
+    token = login
+
+    patch api_v1_profile_path, params: { user: { name: "Nuevo Nombre" } }, headers: bearer_headers(token)
+    assert_response :ok
+    assert_equal "Nuevo Nombre", response.parsed_body["name"]
+    assert_equal "Nuevo Nombre", @user.reload.name
+
+    patch api_v1_profile_path, params: { user: { name: "" } }, headers: bearer_headers(token)
+    assert_response :unprocessable_entity
+    assert response.parsed_body.fetch("errors").key?("name")
+
+    patch api_v1_profile_path, params: { user: { name: "Otro" } }
+    assert_response :unauthorized
+  end
+
+  test "orders require authentication" do
+    get api_v1_orders_path
+    assert_response :unauthorized
+    post api_v1_orders_path, params: { order: { items: [] } }
+    assert_response :unauthorized
+  end
+
+  test "order creation rejects insufficient stock" do
+    product = products(:one)
+    token = login
+
+    post api_v1_orders_path,
+      params: { order: { items: [ { product_id: product.id, quantity: product.stock + 1 } ] } },
+      headers: bearer_headers(token)
+
+    assert_response :unprocessable_entity
+    assert_match(/Stock insuficiente/, response.parsed_body["error"])
+  end
+
+  test "lists only the current user's orders" do
+    token = login
+    product = products(:one)
+    post api_v1_orders_path, params: { order: { items: [ { product_id: product.id, quantity: 1 } ] } }, headers: bearer_headers(token)
+
+    get api_v1_orders_path, headers: bearer_headers(token)
+
+    assert_response :ok
+    assert_equal 1, response.parsed_body.size
+    assert_equal @user.orders.first.id, response.parsed_body.first["id"]
+  end
+
+  test "cancelling a pending order restores stock" do
+    product = products(:one)
+    initial_stock = product.stock
+    token = login
+    post api_v1_orders_path, params: { order: { items: [ { product_id: product.id, quantity: 1 } ] } }, headers: bearer_headers(token)
+    order_id = response.parsed_body.fetch("id")
+    assert_equal initial_stock - 1, product.reload.stock
+
+    post cancel_api_v1_order_path(order_id), headers: bearer_headers(token)
+
+    assert_response :ok
+    assert_equal "cancelled", response.parsed_body["status"]
+    assert_equal initial_stock, product.reload.stock
+
+    post cancel_api_v1_order_path(order_id), headers: bearer_headers(token)
+    assert_response :unprocessable_entity
+    assert_equal initial_stock, product.reload.stock
+  end
+
+  test "users cannot cancel another user's order" do
+    token = login
+
+    post cancel_api_v1_order_path(orders(:two)), headers: bearer_headers(token)
+
+    assert_response :not_found
+  end
+
   private
 
   def login
