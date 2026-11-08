@@ -38,5 +38,13 @@ if Rails.env.development?
   end
   admin.admin = true
   admin.save!
+
+  customer = User.find_or_initialize_by(email: "cliente@sdtactical.test")
+  unless customer.persisted?
+    customer.name = "Cliente de demostración"
+    customer.password = "demo-password-123"
+  end
+  customer.admin = false
+  customer.save!
 end
 #   end
