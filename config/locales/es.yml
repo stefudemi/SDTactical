@@ -15,3 +15,10 @@ es:
       greater_than: "debe ser mayor que %{count}"
       greater_than_or_equal_to: "debe ser mayor o igual que %{count}"
       inclusion: "no está incluido en la lista"
+  activerecord:
+    attributes:
+      user:
+        name: "Nombre"
+        email: "Email"
+        password: "Contraseña"
+        password_confirmation: "Confirmación de contraseña"
