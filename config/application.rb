@@ -18,6 +18,9 @@ module SdTactical
     config.autoload_lib(ignore: %w[assets tasks])
     config.middleware.insert_before 0, ApiCorsMiddleware
 
+    config.i18n.available_locales = %i[en es]
+    config.i18n.fallbacks = [ :en ]
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

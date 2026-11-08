@@ -263,6 +263,31 @@ class Api::V1::ApiTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test "cors preflight allows PATCH from the frontend origin" do
+    options api_v1_profile_path, headers: { "Origin" => "http://localhost:5173", "Access-Control-Request-Method" => "PATCH" }
+
+    assert_response :no_content
+    assert_includes response.headers["Access-Control-Allow-Methods"], "PATCH"
+  end
+
+  test "missing parameters and invalid JSON return a JSON 400" do
+    post api_v1_register_path, params: {}.to_json, headers: { "CONTENT_TYPE" => "application/json" }
+    assert_response :bad_request
+    assert response.parsed_body["error"].present?
+
+    post api_v1_login_path, params: "{no es json", headers: { "CONTENT_TYPE" => "application/json" }
+    assert_response :bad_request
+    assert_equal "application/json", response.media_type
+  end
+
+  test "validation errors are returned in Spanish" do
+    post api_v1_register_path, params: { user: { name: "", email: "x", password: "1", password_confirmation: "2" } }
+
+    errors = response.parsed_body.fetch("errors")
+    assert_includes errors["name"], "no puede estar vacío"
+    assert_includes errors["email"], "no es válido"
+  end
+
   private
 
   def login

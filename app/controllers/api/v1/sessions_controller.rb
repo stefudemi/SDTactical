@@ -1,4 +1,4 @@
-class Api::V1::SessionsController < ActionController::API
+class Api::V1::SessionsController < Api::V1::ApiController
   def create
     user = User.find_by(email: params[:email].to_s.strip.downcase)
     unless user&.authenticate(params[:password])
@@ -11,8 +11,7 @@ class Api::V1::SessionsController < ActionController::API
   end
 
   def destroy
-    scheme, token = request.authorization.to_s.split(" ", 2)
-    user = User.find_by(api_token: token) if scheme&.casecmp("Bearer")&.zero? && token.present?
+    user = User.find_by(api_token: bearer_token) if bearer_token
     unless user
       render json: { error: "No autorizado" }, status: :unauthorized
       return

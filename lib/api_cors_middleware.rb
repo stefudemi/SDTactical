@@ -22,7 +22,7 @@ class ApiCorsMiddleware
 
     {
       "Access-Control-Allow-Origin" => allowed_origin,
-      "Access-Control-Allow-Methods" => "GET, POST, DELETE, OPTIONS",
+      "Access-Control-Allow-Methods" => "GET, POST, PATCH, DELETE, OPTIONS",
       "Access-Control-Allow-Headers" => "Authorization, Content-Type",
       "Vary" => "Origin"
     }

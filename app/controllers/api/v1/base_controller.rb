@@ -1,4 +1,4 @@
-class Api::V1::BaseController < ActionController::API
+class Api::V1::BaseController < Api::V1::ApiController
   before_action :authenticate_api_user!
 
   private
@@ -6,12 +6,7 @@ class Api::V1::BaseController < ActionController::API
   attr_reader :current_user
 
   def authenticate_api_user!
-    scheme, token = request.authorization.to_s.split(" ", 2)
-    @current_user = User.find_by(api_token: token) if scheme&.casecmp("Bearer")&.zero? && token.present?
+    @current_user = User.find_by(api_token: bearer_token) if bearer_token
     render json: { error: "No autorizado" }, status: :unauthorized unless @current_user
-  end
-
-  def render_record_errors(record)
-    render json: { errors: record.errors.to_hash }, status: :unprocessable_entity
   end
 end

@@ -1,4 +1,4 @@
-class Api::V1::ProductsController < ActionController::API
+class Api::V1::ProductsController < Api::V1::ApiController
   include Rails.application.routes.url_helpers
 
   def index
