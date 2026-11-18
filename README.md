@@ -2,13 +2,9 @@
 
 Tienda de equipamiento de airsoft: catálogo, carrito y pedidos para el usuario final (React) y back-office de administración (Rails).
 
-| Dato | Detalle |
-|---|---|
-| Materia | Programación IV - Trabajo Práctico N.º 2 |
-| Modalidad | Individual |
-| Autor | [Nombre y apellido] (autor del back-end del TP 1 y del front-end) |
-| Back-end | Ruby on Rails 8 (API JSON + back-office con vistas) - este repositorio |
-| Front-end | React 19 + Vite + React Router - [SDTactical-frontend](https://github.com/stefudemi/SDTactical-frontend) (también en `frontend/`) |
+Autor: Stefano Deminicis
+
++ React Router - [SDTactical-frontend](https://github.com/stefudemi/SDTactical-frontend) (también en `frontend/`) |
 | Contrato de la API | [API_CONTRACT.md](API_CONTRACT.md) |
 
 
@@ -45,8 +41,6 @@ npm run dev             # http://localhost:5173
 
 ### Variables de entorno (sin secretos)
 
-| Variable | Proyecto | Por defecto | Uso |
-|---|---|---|---|
 | `FRONTEND_ORIGIN` | Back-end | `http://localhost:5173` | Origen permitido por CORS |
 | `VITE_API_URL` | Front-end | `http://localhost:3000/api/v1` | URL base de la API (ver `frontend/.env.example`) |
 
@@ -55,8 +49,7 @@ npm run dev             # http://localhost:5173
 
 `bin/rails db:seed` crea 3 categorías, 11 productos con foto (en `db/seeds/images/`, créditos en `CREDITS.md`) y, **solo en desarrollo**, dos usuarios locales:
 
-| Rol | Email | Contraseña |
-|---|---|---|
+
 | Administrador (back-office `/admin`) | `admin@sdtactical.test` | `dev-password-123` |
 | Cliente (front-end) | `cliente@sdtactical.test` | `demo-password-123` |
 
