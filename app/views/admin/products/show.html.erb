@@ -1,8 +1,35 @@
-<h1><%= @product.name %></h1>
+<section class="admin-shell">
+  <div class="container">
+    <div class="admin-header">
+      <div>
+        <p class="eyebrow"><%= @product.category.name %></p>
+        <h1><%= @product.name %></h1>
+      </div>
 
-<p><%= @product.description %></p>
-<p>Price: <%= @product.price %></p>
-<p>Stock: <%= @product.stock %></p>
+      <div class="admin-actions">
+        <%= link_to "Editar", edit_admin_product_path(@product), class: "btn btn-primary" %>
+        <%= link_to "Volver", admin_products_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
 
-<%= link_to "Edit", edit_admin_product_path(@product) %>
-<%= link_to "Back", admin_products_path %>
+    <article class="admin-card admin-product">
+      <% if @product.image.attached? %>
+        <%= image_tag @product.image, alt: @product.name, class: "admin-product__image" %>
+      <% end %>
+
+      <dl class="admin-details">
+        <dt>Descripción</dt>
+        <dd><%= @product.description.presence || "—" %></dd>
+
+        <dt>Precio</dt>
+        <dd><%= number_to_currency(@product.price, unit: "$", separator: ",", delimiter: ".", precision: 0) %></dd>
+
+        <dt>Stock</dt>
+        <dd><%= @product.stock %></dd>
+
+        <dt>Categoría</dt>
+        <dd><%= @product.category.name %></dd>
+      </dl>
+    </article>
+  </div>
+</section>

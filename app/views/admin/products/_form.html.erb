@@ -1,4 +1,4 @@
-<%= form_with model: [:admin, @product] do |form| %>
+<%= form_with model: [:admin, @product], class: "admin-form" do |form| %>
   <% if @product.errors.any? %>
     <div class="admin-errors">
       <strong><%= pluralize(@product.errors.count, "error") %> impidieron guardar el producto:</strong>
@@ -10,38 +10,40 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+  <div class="admin-field">
+    <%= form.label :name, "Nombre" %>
+    <%= form.text_field :name, autofocus: true %>
   </div>
 
-  <div>
-    <%= form.label :description %>
+  <div class="admin-field">
+    <%= form.label :description, "Descripción" %>
     <%= form.text_area :description %>
   </div>
 
-  <div>
-    <%= form.label :price %>
-    <%= form.number_field :price, step: 0.01 %>
+  <div class="admin-field-row">
+    <div class="admin-field">
+      <%= form.label :price, "Precio" %>
+      <%= form.number_field :price, step: 0.01 %>
+    </div>
+
+    <div class="admin-field">
+      <%= form.label :stock, "Stock" %>
+      <%= form.number_field :stock, step: 1 %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :stock %>
-    <%= form.number_field :stock, step: 1 %>
-  </div>
-
-  <div>
-    <%= form.label :category_id %>
+  <div class="admin-field">
+    <%= form.label :category_id, "Categoría" %>
     <%= form.collection_select :category_id, Category.order(:name), :id, :name, prompt: "Seleccioná una categoría" %>
   </div>
 
-  <div>
-    <%= form.label :image %>
+  <div class="admin-field">
+    <%= form.label :image, "Imagen" %>
     <%= form.file_field :image, accept: "image/*" %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="admin-form-actions">
+    <%= form.submit "Guardar producto", class: "btn btn-primary" %>
+    <%= link_to "Cancelar", admin_products_path, class: "btn btn-secondary" %>
   </div>
-
 <% end %>

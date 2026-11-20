@@ -1,21 +1,59 @@
-<h1>Products</h1>
+<section class="admin-shell">
+  <div class="container">
+    <div class="admin-header">
+      <div>
+        <p class="eyebrow">Catálogo</p>
+        <h1>Productos</h1>
+      </div>
 
-<%= link_to "New product", new_admin_product_path %>
+      <%= link_to "Nuevo producto", new_admin_product_path, class: "btn btn-primary" %>
+    </div>
 
-<ul>
-  <% @products.each do |product| %>
-    <li>
-      <%= product.name %>
-      -
-      <%= product.price %>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th></th>
+          </tr>
+        </thead>
 
-      <%= link_to "Show", admin_product_path(product) %>
-      <%= link_to "Edit", edit_admin_product_path(product) %>
-
-      <%= button_to "Delete",
-          admin_product_path(product),
-          method: :delete,
-          data: { turbo_confirm: "Are you sure?" } %>
-    </li>
-  <% end %>
-</ul>
+        <tbody>
+          <% @products.each do |product| %>
+            <tr>
+              <td>
+                <% if product.image.attached? %>
+                  <%= image_tag product.image, alt: "", class: "admin-thumb" %>
+                <% else %>
+                  <span class="admin-thumb admin-thumb--empty" aria-hidden="true">SD</span>
+                <% end %>
+              </td>
+              <td><%= link_to product.name, admin_product_path(product) %></td>
+              <td><%= product.category.name %></td>
+              <td><%= number_to_currency(product.price, unit: "$", separator: ",", delimiter: ".", precision: 0) %></td>
+              <td>
+                <% if product.stock.zero? %>
+                  <span class="badge badge--danger">Sin stock</span>
+                <% elsif product.stock <= 5 %>
+                  <span class="badge badge--warning"><%= product.stock %> · bajo</span>
+                <% else %>
+                  <%= product.stock %>
+                <% end %>
+              </td>
+              <td class="admin-row-actions">
+                <%= link_to "Editar", edit_admin_product_path(product) %>
+                <%= button_to "Eliminar", admin_product_path(product), method: :delete,
+                              class: "link-danger", form: { class: "inline-form" },
+                              data: { turbo_confirm: "¿Eliminar este producto?" } %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
